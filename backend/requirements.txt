@@ -1,0 +1,10 @@
+fastapi
+python-dotenv
+google-generativeai
+deep-translator
+uvicorn
+langchain
+langchain-community
+pydantic
+PyMuPDF
+faiss-cpu
