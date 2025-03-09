@@ -31,6 +31,20 @@ This is a chatbot application built with FastAPI (backend) and React (frontend).
    ```sh
    cd backend
    ```
+4. Create a `.env ` folder and place your API key form `Gemini`:
+   ```sh
+   New-Item -ItemType File .env
+   ```
+   Now Go to [Google AI Studio](https://aistudio.google.com/apikey).
+   - Log in with you Gmail Account
+   - Click the `Create API key` Button.
+   - And Copy the `API` Key:
+   - And paste your `API` key on `"your_api_key"`
+     
+     ```sh
+     GEMINI_API_KEY="your_api_key"
+     ```
+   
 4. Run FastAPI server:
    ```sh
    uvicorn main:app --reload
@@ -57,8 +71,8 @@ This is a chatbot application built with FastAPI (backend) and React (frontend).
 - `POST /clear` - Clear all the data stored in memory and delete PDF files.
 
 ## Technologies Used
-- **Backend**: FastAPI, Deep Translator, PyPDF, FAISS, PyMuPDFLoader, HuggingFace Embeddings, LangChain
-- **Frontend**: React, Tailwind CSS
+- **Backend**: [FastAPI](https://fastapi.tiangolo.com/), [Deep Translator](https://pypi.org/project/deep-translator/), [PyPDF](https://pypi.org/project/pypdf/), [FAISS](https://faiss.ai/), [PyMuPDFLoader](https://pymupdf.readthedocs.io/en/latest/), HuggingFace Embeddings, [LangChain](https://python.langchain.com/docs/introduction/)
+- **Frontend**: [React (Vite)](https://vite.dev/), [Tailwind CSS](https://tailwindcss.com/)
 
 ## Contributors
 - Nishan Shrestha
