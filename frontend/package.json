@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "clean": "rimraf node_modules/.vite",
+    "force-clean": "rimraf node_modules/.vite deps node_modules"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.0.8",
@@ -30,6 +32,7 @@
     "eslint-plugin-react-hooks": "^5.0.0",
     "eslint-plugin-react-refresh": "^0.4.18",
     "globals": "^15.14.0",
+    "rimraf": "^6.0.1",
     "vite": "^6.1.0"
   }
 }

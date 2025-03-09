@@ -51,7 +51,7 @@ function App() {
     };
 
     const sendMessage = async () => {
-        if (!query.trim() || loading) return; // Prevent sending if already loading
+        if (!query.trim() || loading) return;
 
         setMessages([...messages, { text: query, type: "user" }]);
         setQuery("");
@@ -60,23 +60,38 @@ function App() {
 
         try {
             const response = await axios.post(
-                "http://127.0.0.1:8000/query/", // Note the trailing slash
+                "http://127.0.0.1:8000/query/",
                 { query, language },
-                { headers: { "Content-Type": "application/json" } }
+                {
+                    headers: { "Content-Type": "application/json" },
+                    timeout: 30000, // 30 second timeout
+                }
             );
 
-            const botResponse = response.data.response;
-
+            if (response.data && response.data.response) {
+                setMessages((prev) => [
+                    ...prev,
+                    {
+                        text: response.data.response,
+                        type: "bot",
+                    },
+                ]);
+            } else {
+                throw new Error("Invalid response format");
+            }
+        } catch (error) {
+            console.error("Query error:", error);
             setMessages((prev) => [
                 ...prev,
                 {
-                    text: botResponse,
+                    text: `Error: ${
+                        error.response?.data?.detail ||
+                        error.message ||
+                        "Something went wrong"
+                    }`,
                     type: "bot",
                 },
             ]);
-        } catch (error) {
-            console.error("Query error:", error);
-            alert(`Error: ${error.message}`);
         } finally {
             setLoading(false);
         }
@@ -116,26 +131,24 @@ function App() {
                 <div className="message p-3 rounded overflow-auto w-3/4 mt-4 flex-grow scrollbar-hide">
                     {files.length > 0 && (
                         <div className="mb-4 w-full">
-                                <div className="files flex justify-end space-x-2 overflow-x-auto scrollbar-hide">
-                                    {files.map((file, index) => (
-                                        <div
-                                            key={index}
-                                            className="flex-shrink-0 flex flex-row border border-[#ffffff1a] bg-[#212121] min-w-sm h-15 text-[#ececec] items-center p-2 rounded-2xl relative"
-                                        >
-                                            <FileText className="w-10 h-full mr-2 bg-[#ff5588] rounded-lg text-lg font-light" />
-                                            <div className="flex flex-col">
-                                                <span className="truncate">
-                                                    {truncateFileName(
-                                                        file.name
-                                                    )}
-                                                </span>
-                                                <span className="text-sm text-gray-400">
-                                                    PDF
-                                                </span>
-                                            </div>
+                            <div className="files flex justify-end space-x-2 overflow-x-auto scrollbar-hide">
+                                {files.map((file, index) => (
+                                    <div
+                                        key={index}
+                                        className="flex-shrink-0 flex flex-row border border-[#ffffff1a] bg-[#212121] min-w-sm h-15 text-[#ececec] items-center p-2 rounded-2xl relative"
+                                    >
+                                        <FileText className="w-10 h-full mr-2 bg-[#ff5588] rounded-lg text-lg font-light" />
+                                        <div className="flex flex-col">
+                                            <span className="truncate">
+                                                {truncateFileName(file.name)}
+                                            </span>
+                                            <span className="text-sm text-gray-400">
+                                                PDF
+                                            </span>
                                         </div>
-                                    ))}
-                                </div>
+                                    </div>
+                                ))}
+                            </div>
                         </div>
                     )}
 
